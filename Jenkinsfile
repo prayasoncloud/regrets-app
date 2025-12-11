@@ -53,15 +53,18 @@ pipeline {
         sh '''
           #!/bin/bash
           set -euo pipefail
+          // --- IMPROVEMENT: Removed || true. Build will now fail if linting fails. ---
           . .venv/bin/activate
           if command -v .venv/bin/flake8 >/dev/null 2>&1; then
-            .venv/bin/flake8 || true
+          echo "Running flake8..."  
+            .venv/bin/flake8 // Build fails here if lint errors are found
           else
             echo "flake8 not installed - skipping lint"
           fi
 
           # run a non-invasive syntax check for the app
-          .venv/bin/python -m py_compile main.py || true
+           echo "Running python syntax check..."
+          .venv/bin/python -m py_compile main.py
         '''
       }
     }
@@ -73,6 +76,7 @@ pipeline {
           set -euo pipefail
           . .venv/bin/activate
           if [ -d tests ] && command -v .venv/bin/pytest >/dev/null 2>&1; then
+            echo "Running pytest..."
             .venv/bin/pytest -q
           else
             echo "No tests found or pytest not installed - skipped"
