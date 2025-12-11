@@ -21,6 +21,7 @@ pipeline {
       steps {
         // use a short shell block and ensure any failure stops the stage
         sh '''
+          #!/bin/bash
           set -euo pipefail
           python3 --version
           python3 -m venv .venv
@@ -35,6 +36,7 @@ pipeline {
     stage('Install dependencies') {
       steps {
         sh '''
+          #!/bin/bash
           set -euo pipefail
           . .venv/bin/activate
           if [ -f requirements.txt ]; then
@@ -49,6 +51,7 @@ pipeline {
     stage('Lint / Basic checks') {
       steps {
         sh '''
+          #!/bin/bash
           set -euo pipefail
           . .venv/bin/activate
           if command -v .venv/bin/flake8 >/dev/null 2>&1; then
@@ -66,6 +69,7 @@ pipeline {
     stage('Run tests') {
       steps {
         sh '''
+          #!/bin/bash
           set -euo pipefail
           . .venv/bin/activate
           if [ -d tests ] && command -v .venv/bin/pytest >/dev/null 2>&1; then
