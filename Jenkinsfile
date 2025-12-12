@@ -12,36 +12,36 @@ pipeline {
         stage('Setup Python') {
             steps {
                 sh '''#!/bin/bash
-                set -euo pipefail
-                python3 --version
-                '''
+set -euo pipefail
+python3 --version
+'''
             }
         }
 
         stage('Install dependencies') {
             steps {
                 sh '''#!/bin/bash
-                set -euo pipefail
-                pip3 install -r requirements.txt
-                '''
+set -euo pipefail
+pip3 install -r requirements.txt
+'''
             }
         }
 
         stage('Lint / Basic checks') {
             steps {
                 sh '''#!/bin/bash
-                set -euo pipefail
-                python3 -m py_compile main.py
-                '''
+set -euo pipefail
+python3 -m py_compile main.py
+'''
             }
         }
 
         stage('Run tests') {
             steps {
                 sh '''#!/bin/bash
-                set -euo pipefail
-                python3 main.py
-                '''
+set -euo pipefail
+python3 main.py
+'''
             }
         }
     }
@@ -49,9 +49,9 @@ pipeline {
     post {
         always {
             sh '''#!/bin/bash
-            echo "Build finished. Listing workspace:"
-            ls -la
-            '''
+echo "Build finished. Listing workspace:"
+ls -la
+'''
             archiveArtifacts artifacts: '**/*', allowEmptyArchive: true
         }
 
