@@ -14,6 +14,9 @@ pipeline {
                 sh '''#!/bin/bash
 set -euo pipefail
 python3 --version
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
 '''
             }
         }
@@ -22,7 +25,8 @@ python3 --version
             steps {
                 sh '''#!/bin/bash
 set -euo pipefail
-pip3 install -r requirements.txt
+source .venv/bin/activate
+pip install -r requirements.txt
 '''
             }
         }
@@ -31,6 +35,7 @@ pip3 install -r requirements.txt
             steps {
                 sh '''#!/bin/bash
 set -euo pipefail
+source .venv/bin/activate
 python3 -m py_compile main.py
 '''
             }
@@ -40,6 +45,7 @@ python3 -m py_compile main.py
             steps {
                 sh '''#!/bin/bash
 set -euo pipefail
+source .venv/bin/activate
 python3 main.py
 '''
             }
