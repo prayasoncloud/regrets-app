@@ -76,6 +76,18 @@ pipeline {
         '''
       }
     }
+    // ADD THIS STAGE
+    stage('Deploy to Docker Desktop') {
+      steps {
+        sh '''
+          set -euo pipefail
+          docker stop regrets-app-container || true
+          docker rm regrets-app-container || true
+          docker build -t regrets-app:latest .
+          docker run -d -p 5000:5000 --name regrets-app-container regrets-app:latest
+        '''
+      }
+    } 
   }
 
   post {
