@@ -47,20 +47,20 @@ pipeline {
     }
 
     stage('Lint / Basic checks') {
-      steps {
-        sh '''#!/usr/bin/env bash
-          set -euo pipefail
-          . .venv/bin/activate
-          if command -v .venv/bin/flake8 >/dev/null 2>&1; then
-            .venv/bin/flake8 || true
-          else
-            echo "flake8 not installed - skipping lint"
-          fi
+        steps {
+            sh '''#!/usr/bin/env bash
+            set -euo pipefail
+            . .venv/bin/activate
 
-          # run a non-invasive syntax check for the app
-          .venv/bin/python -m py_compile main.py || true
-        '''
-      }
+            if [ -x ".venv/bin/flake8" ]; then
+            flake8 main.py || true
+            else
+            echo "flake8 not installed - skipping lint"
+            fi
+
+            python -m py_compile main.py || true
+            '''
+        }
     }
 
     stage('Run tests') {
